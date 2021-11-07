@@ -47,8 +47,10 @@ module Telegram
       def call(endpoint, raw_params = {})
         params = build_params(raw_params)
         response = conn.post("/bot#{token}/#{endpoint}", params)
-        if response.status == 200 || 403
-          JSON.parse(response.body)
+         if response.status == 200
+		        JSON.parse(response.body)
+	       elsif response.status == 403
+            JSON.parse(response.body)
         else
           raise Exceptions::ResponseError.new(response),
                 'Telegram API has returned the error.'
